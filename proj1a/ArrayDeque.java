@@ -27,7 +27,7 @@ public class ArrayDeque<T> {
     private void big(int x) {
         T[] t = (T[]) new Object[x];
         System.arraycopy(items, 0, t, 0, nextlast);
-        System.arraycopy(items, nextlast, t, x - length + nextfirst + 1, length - nextlast );
+        System.arraycopy(items, nextlast, t, x - length + nextfirst + 1, length - nextlast);
         items = t;
         nextfirst = x - length + nextfirst;
         length = x;
@@ -62,22 +62,22 @@ public class ArrayDeque<T> {
     }
     public T removeFirst() {
         T x;
-        nextfirst =plusone(nextfirst);
+        nextfirst = plusone(nextfirst);
         x = items[nextfirst];
         size -= 1;
         items[nextfirst] = null;
         return x;
     }
     public T get(int index) {
-        if(index >= size){
+        if (index >= size) {
             return null;
         }
         int first = nextfirst + 1;
-        while(index != 0) {
+        while (index != 0) {
             first += 1;
             index -= 1;
         }
-        if(first >= length){
+        if (first >= length) {
             first -= length;
         }
         return items[first];
@@ -88,9 +88,9 @@ public class ArrayDeque<T> {
 
     public void printDeque() {
         int first = nextfirst + 1;
-        while(nextfirst != nextlast) {
+        while (nextfirst != nextlast) {
             if (items[first] == null) {
-                return ;
+                return;
             }
             System.out.print(items[first] + " ");
             first = plusone(first);

@@ -39,7 +39,7 @@ public class LinkedListDeque<T> {
     public void addFirst(T addfirstitem) {
         IntNode firstlist = new IntNode(sentinel, addfirstitem, sentinel.next);
         sentinel.next = firstlist;
-        sentinel.next.prev = firstlist;
+        sentinel.next.next.prev = firstlist;
         size += 1;
     }
     public int size() {
@@ -68,7 +68,7 @@ public class LinkedListDeque<T> {
         return removelastitem;
     }
     public T get(int index) {
-        if (index == 0){
+        if (index == 0) {
             return sentinel.next.item;
         }
         IntNode sentinelplus = sentinel;
@@ -88,14 +88,14 @@ public class LinkedListDeque<T> {
     private T recursivehelp(IntNode node, int x) {
         if (x == 0) {
             return node.item;
-        }
-        else {
+
+        } else {
             return recursivehelp(node.next, x - 1);
         }
     }
 
     public T getRecursive(int index) {
-        if (index >= size ) {
+        if (index >= size) {
             return null;
         }
         return recursivehelp(sentinel, size);
