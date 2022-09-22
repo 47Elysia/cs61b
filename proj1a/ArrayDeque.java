@@ -44,13 +44,11 @@ public class ArrayDeque<T> {
         T[] t = (T[]) new Object[length / 2];
         int st1 = front + 1;
         int st2 = length / 4;
-        while(st1 != last - 1) {
+        while (st1 != last) {
             t[st2] = items[st1];
             st1 = plusone(st1, length);
             st2 = plusone(st2, length / 2);
         }
-        t[st2] = items[st1];
-        st2 = plusone(st2, length / 2);
         last = st2;
         front = length / 2 - 1;
         items = t;
@@ -60,11 +58,11 @@ public class ArrayDeque<T> {
     public boolean isEmpty() {
         return size == 0;
     }
-    public void addLast(T Last) {
+    public void addLast(T aLast) {
         if (items[last] != null) {
             big();
         }
-        items[last] = Last;
+        items[last] = aLast;
         last = plusone(last, length);
         size += 1;
     }
@@ -111,6 +109,7 @@ public class ArrayDeque<T> {
         int first = front + 1;
         while (index != 0) {
             first = plusone(first, length);
+            index -= 1;
         }
         return items[first];
     }
