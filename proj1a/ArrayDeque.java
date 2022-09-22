@@ -11,11 +11,11 @@ public class ArrayDeque<T> {
         nextfirst = 3;
         nextlast = 4;
     }
-    private int plusone(int index) {
-        if (index == length - 1) {
+    private int plusone(int index, int modulo) {
+        if ((index + 1) % modulo == 0) {
             return 0;
         }
-        return index + 1;
+        return index % modulo;
     }
     private int minusone(int index) {
         if (index == 0) {
@@ -24,13 +24,33 @@ public class ArrayDeque<T> {
         return index - 1;
     }
 
-    private void big(int x) {
-        T[] t = (T[]) new Object[x];
-        System.arraycopy(items, 0, t, 0, nextlast);
-        System.arraycopy(items, nextlast, t, x - length + nextfirst + 1, length - nextlast);
+    private void big() {
+        T[] t = (T[]) new Object[2 * length];
+        int st1 = nextfirst + 1;
+        int st2 = length;
+        while (st1 != nextlast){
+            t[st2] = items[st1];
+            st1 = plusone(st1, length);
+            st2 = plusone(st2, length * 2);
+        }
+        nextlast = st2;
+        nextfirst = length - 1;
         items = t;
-        nextfirst = x - length + nextfirst;
-        length = x;
+        length *= 2;
+    }
+    private void small(){
+        T[] t = (T[]) new Object[length / 2];
+        int st1 = nextfirst + 1;
+        int st2 = length / 4;
+        while(st1 != nextlast){
+            t[st2] = items[st1];
+            st1 = plusone(st1, length);
+            st2 = plusone(st2, length / 2);
+        }
+        nextlast = st2;
+        nextfirst = length / 2 - 1;
+        items = t;
+        length /= 2;
     }
 
     public boolean isEmpty() {
@@ -38,21 +58,27 @@ public class ArrayDeque<T> {
     }
     public void addLast(T last) {
         if (items[nextlast] != null) {
-            big(2 * length);
+            big();
         }
         items[nextlast] = last;
-        nextlast = plusone(nextlast);
+        nextlast = plusone(nextlast, length);
         size += 1;
     }
     public void addFirst(T first) {
         if (items[nextfirst] != null) {
-            big(2 * length);
+            big();
         }
         items[nextfirst] = first;
         nextfirst = minusone(nextfirst);
         size += 1;
     }
     public T removeLast() {
+        if (length >= 16 && size / length <= 0.25){
+            small();
+        }
+        if (size == 0){
+            return null;
+        }
         T x;
         nextlast = minusone(nextlast);
         x = items[nextlast];
@@ -61,8 +87,14 @@ public class ArrayDeque<T> {
         return x;
     }
     public T removeFirst() {
+        if (length >= 16 && size / length <= 0.25){
+            small();
+        }
+        if (size == 0){
+            return null;
+        }
         T x;
-        nextfirst = plusone(nextfirst);
+        nextfirst = plusone(nextfirst, length);
         x = items[nextfirst];
         size -= 1;
         items[nextfirst] = null;
@@ -93,7 +125,7 @@ public class ArrayDeque<T> {
                 return;
             }
             System.out.print(items[first] + " ");
-            first = plusone(first);
+            first = plusone(first,length);
         }
     }
 
