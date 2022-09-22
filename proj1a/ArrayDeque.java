@@ -52,7 +52,7 @@ public class ArrayDeque <T>{
         nextfirst = minusone(nextfirst);
         size += 1;
     }
-    public T removeLast(T last){
+    public T removeLast(){
         T x;
         nextlast = minusone(nextlast);
         x = items[nextlast];
@@ -60,7 +60,7 @@ public class ArrayDeque <T>{
         items[nextlast] = null;
         return x;
     }
-    public T removeFirst(T first){
+    public T removeFirst(){
         T x;
         nextfirst =plusone(nextfirst);
         x = items[nextfirst];
@@ -84,6 +84,17 @@ public class ArrayDeque <T>{
     }
     public int size(){
         return size;
+    }
+
+    public void printDeque(){
+        int first = nextfirst + 1;
+        while(nextfirst != nextlast){
+            if (items[first] == null){
+                return ;
+            }
+            System.out.print(items[first] + " ");
+            first = plusone(first);
+        }
     }
 
 }
