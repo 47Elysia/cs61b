@@ -1,30 +1,30 @@
-public class ArrayDeque <T>{
+public class ArrayDeque<T> {
     private int size;
     private int length;
     private int nextfirst;
     private int nextlast;
     private T[] items;
-    public ArrayDeque(){
+    public ArrayDeque() {
         items = (T[]) new Object[8];
         size = 0;
         length = 8;
         nextfirst = 3;
         nextlast = 4;
     }
-    public int plusone(int index){
-        if (index == length - 1){
+    private int plusone(int index) {
+        if (index == length - 1) {
             return 0;
         }
         return index + 1;
     }
-    public int minusone(int index){
-        if (index == 0){
+    private int minusone(int index) {
+        if (index == 0) {
             return length;
         }
         return index - 1;
     }
 
-    public void big(int x){
+    private void big(int x) {
         T[] t = (T[]) new Object[x];
         System.arraycopy(items, 0, t, 0, nextlast);
         System.arraycopy(items, nextlast, t, x - length + nextfirst + 1, length - nextlast );
@@ -33,26 +33,26 @@ public class ArrayDeque <T>{
         length = x;
     }
 
-    public boolean isEmpty(){
+    public boolean isEmpty() {
         return size == 0;
     }
-    public void addLast(T last){
-        if (items[nextlast] != null){
+    public void addLast(T last) {
+        if (items[nextlast] != null) {
             big(2 * length);
         }
         items[nextlast] = last;
         nextlast = plusone(nextlast);
         size += 1;
     }
-    public void addFirst(T first){
-        if (items[nextfirst] != null){
+    public void addFirst(T first) {
+        if (items[nextfirst] != null) {
             big(2 * length);
         }
         items[nextfirst] = first;
         nextfirst = minusone(nextfirst);
         size += 1;
     }
-    public T removeLast(){
+    public T removeLast() {
         T x;
         nextlast = minusone(nextlast);
         x = items[nextlast];
@@ -60,7 +60,7 @@ public class ArrayDeque <T>{
         items[nextlast] = null;
         return x;
     }
-    public T removeFirst(){
+    public T removeFirst() {
         T x;
         nextfirst =plusone(nextfirst);
         x = items[nextfirst];
@@ -68,12 +68,12 @@ public class ArrayDeque <T>{
         items[nextfirst] = null;
         return x;
     }
-    public T get(int index){
+    public T get(int index) {
         if(index >= size){
             return null;
         }
         int first = nextfirst + 1;
-        while(index != 0){
+        while(index != 0) {
             first += 1;
             index -= 1;
         }
@@ -82,14 +82,14 @@ public class ArrayDeque <T>{
         }
         return items[first];
     }
-    public int size(){
+    public int size() {
         return size;
     }
 
-    public void printDeque(){
+    public void printDeque() {
         int first = nextfirst + 1;
-        while(nextfirst != nextlast){
-            if (items[first] == null){
+        while(nextfirst != nextlast) {
+            if (items[first] == null) {
                 return ;
             }
             System.out.print(items[first] + " ");
