@@ -132,16 +132,4 @@ public class ArrayDeque<T> {
         }
         System.out.print(items[first] + " ");
     }
-    public static void main(String[] args){
-        ArrayDeque x = new ArrayDeque();
-        x.size();
-        x.addLast(1);
-        x.addFirst(2);
-        x.addLast(3);
-        x.addFirst(4);
-        x.addFirst(5);
-        x.addLast(6);
-        x.addFirst(7);
-        x.addFirst(8);
-    }
 }
