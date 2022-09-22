@@ -27,7 +27,7 @@ public class ArrayDeque<T> {
 
     private void big() {
         T[] t = (T[]) new Object[2 * length];
-        int st1 = front + 1;
+        int st1 = plusone(front, length);
         int st2 = length;
         while (st1 != last - 1) {
             t[st2] = items[st1];
@@ -60,7 +60,7 @@ public class ArrayDeque<T> {
         return size == 0;
     }
     public void addLast(T aLast) {
-        if (items[last] != null) {
+        if (size == length) {
             big();
         }
         items[last] = aLast;
@@ -68,7 +68,7 @@ public class ArrayDeque<T> {
         size += 1;
     }
     public void addFirst(T first) {
-        if (items[front] != null) {
+        if (size == length) {
             big();
         }
         items[front] = first;
@@ -107,7 +107,7 @@ public class ArrayDeque<T> {
         if (index >= size) {
             return null;
         }
-        int first = front + 1;
+        int first = plusone(front, length);
         while (index != 0) {
             first = plusone(first, length);
             index -= 1;
