@@ -11,42 +11,50 @@ public class ArrayDeque <T>{
         nextfirst = 3;
         nextlast = 4;
     }
-    public void resize(int x){
+    public int plusone(int index){
+        if (index == length - 1){
+            return 0;
+        }
+        return index + 1;
+    }
+    public int minusone(int index){
+        if (index == 0){
+            return length;
+        }
+        return index - 1;
+    }
+
+    public void big(int x){
         T[] t = (T[]) new Object[x];
         System.arraycopy(items, 0, t, 0, nextlast);
-        System.arraycopy(items, nextlast, t, x - length + nextfirst - 1, length - nextlast );
+        System.arraycopy(items, nextlast, t, x - length + nextfirst + 1, length - nextlast );
         items = t;
         nextfirst = x - length + nextfirst;
         length = x;
     }
+
+    public boolean isEmpty(){
+        return size == 0;
+    }
     public void addLast(T last){
-        if (nextlast == length){
-            nextlast = 0;
-        }
         if (items[nextlast] != null){
-            resize(2 * length);
+            big(2 * length);
         }
         items[nextlast] = last;
-        nextlast += 1;
+        nextlast = plusone(nextlast);
         size += 1;
     }
     public void addFirst(T first){
-        if (nextfirst == -1){
-            nextfirst = length - 1;
-        }
         if (items[nextfirst] != null){
-            resize(2 * length);
+            big(2 * length);
         }
         items[nextfirst] = first;
-        nextfirst -= 1;
+        nextfirst = minusone(nextfirst);
         size += 1;
     }
     public T removeLast(T last){
         T x;
-        nextlast -= 1;
-        if (nextlast == -1){
-            nextlast = length - 1;
-        }
+        nextlast = minusone(nextlast);
         x = items[nextlast];
         size -= 1;
         items[nextlast] = null;
@@ -54,10 +62,7 @@ public class ArrayDeque <T>{
     }
     public T removeFirst(T first){
         T x;
-        nextfirst += 1;
-        if (nextfirst == length){
-            nextfirst = 0;
-        }
+        nextfirst =plusone(nextfirst);
         x = items[nextfirst];
         size -= 1;
         items[nextfirst] = null;
@@ -80,6 +85,5 @@ public class ArrayDeque <T>{
     public int size(){
         return size;
     }
-
 
 }
