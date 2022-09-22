@@ -12,14 +12,15 @@ public class ArrayDeque<T> {
         last = 4;
     }
     private int plusone(int index, int modulo) {
-        if ((index + 1) % modulo == 0) {
+        index = index % modulo;
+        if (index == modulo - 1) {
             return 0;
         }
-        return (index + 1) % modulo;
+        return index + 1;
     }
     private int minusone(int index) {
         if (index == 0) {
-            return length;
+            return length - 1;
         }
         return index - 1;
     }
@@ -130,5 +131,17 @@ public class ArrayDeque<T> {
             return;
         }
         System.out.print(items[first] + " ");
+    }
+    public static void main(String[] args){
+        ArrayDeque x = new ArrayDeque();
+        x.size();
+        x.addLast(1);
+        x.addFirst(2);
+        x.addLast(3);
+        x.addFirst(4);
+        x.addFirst(5);
+        x.addLast(6);
+        x.addFirst(7);
+        x.addFirst(8);
     }
 }
