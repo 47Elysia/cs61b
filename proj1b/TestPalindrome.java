@@ -7,7 +7,7 @@ public class TestPalindrome {
     static Palindrome palindrome = new Palindrome();
 
     @Test
-    public void testisPalindrome(){
+    public void testisPalindrome() {
         assertFalse(palindrome.isPalindrome("cat"));
         assertTrue(palindrome.isPalindrome("cac"));
         assertFalse(palindrome.isPalindrome("cwatsd"));
