@@ -14,11 +14,11 @@ public class TestArrayDequeGold {
                 if (x == 0) {
                     adq.addFirst(randnumber);
                     bdq.addFirst(randnumber);
-                    log += "addFirst: " + randnumber + "\n";
+                    log += "addFirst(" + randnumber + ")\n";
                 } else {
                     adq.addLast(randnumber);
                     bdq.addLast(randnumber);
-                    log += "addLast: " + randnumber + "\n";
+                    log += "addLast(" + randnumber + ")\n";
                 }
             } else {
                 Integer x = StdRandom.uniform(4);
@@ -28,19 +28,19 @@ public class TestArrayDequeGold {
                 if (x == 0) {
                     adq.addFirst(randnumber);
                     bdq.addFirst(randnumber);
-                    log += "addFirst: " + randnumber +"\n";
+                    log += "addFirst(" + randnumber +")\n";
                 } else if (x == 1) {
                     adq.addLast(randnumber);
                     bdq.addLast(randnumber);
-                    log += "addLast: " + randnumber + "\n";
+                    log += "addLast(" + randnumber + ")\n";
                 } else if (x == 2) {
                     aremove = adq.removeFirst();
                     bremove = bdq.removeFirst();
-                    log += "removeFirst: " + randnumber + "\n";
+                    log += "removeFirst()\n";
                 } else {
                     aremove = adq.removeLast();
                     bremove = bdq.removeLast();
-                    log += "removeLast: " + randnumber + "\n";
+                    log += "removeLast()\n";
                 }
                 assertEquals(log, bremove, aremove);
             }
