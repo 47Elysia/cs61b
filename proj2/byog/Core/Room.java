@@ -1,9 +1,7 @@
 package byog.Core;
 import byog.TileEngine.TETile;
 import byog.TileEngine.Tileset;
-import byog.TileEngine.TERenderer;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 public class Room {
@@ -48,14 +46,23 @@ public class Room {
         for (Room room1 : otherroom) {
             int centreXdiff = Math.abs(room.centrex() - room1.centrex());
             int centreYdiff = Math.abs(room.centrey() - room1.centrey());
-            if (room != room1 && (centreXdiff < Math.max(room.roomlength, room1.roomlength) / 2 - 2 || centreYdiff < Math.max(room.roomheight, room1.roomheight) / 2 - 2)) {
+            if (room != room1 && (centreXdiff < Math.max(room.roomlength, room1.roomlength) / 2 - 2)) {
+                return true;
+            }
+            if (room != room1 && (centreYdiff < Math.max(room.roomheight, room1.roomheight) / 2 - 2)) {
                 return true;
             }
         }
         return false;
     }
     public boolean isfringe() {
-        return this.getbottomleftx() == WIDTH - 1 || this.getuprightx() == 0 || this.getbottomlefty() == HEIGHT - 1 || this.getuprighty() == 0;
+        if (this.getbottomleftx() == WIDTH - 1 || this.getuprightx() == 0) {
+            return true;
+        }
+        if (this.getbottomlefty() == HEIGHT - 1 || this.getuprighty() == 0) {
+            return true;
+        }
+        return false;
     }
 
     /*public boolean isconnected(Room room) {

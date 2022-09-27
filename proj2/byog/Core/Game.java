@@ -3,11 +3,15 @@ package byog.Core;
 import byog.TileEngine.TERenderer;
 import byog.TileEngine.TETile;
 
+import java.util.HashMap;
+
 public class Game {
     TERenderer ter = new TERenderer();
     /* Feel free to change the width and height. */
     public static final int WIDTH = 80;
     public static final int HEIGHT = 30;
+
+    public static HashMap<Long, TETile[][]> allWorld = new HashMap<>();
 
     /**
      * Method used for playing a fresh game. The game should start from the main menu.
@@ -28,11 +32,22 @@ public class Game {
      * @return the 2D TETile[][] representing the state of the world
      */
     public TETile[][] playWithInputString(String input) {
-        // TODO: Fill out this method to run the game using the input passed in,
+        // Fill out this method to run the game using the input passed in,
         // and return a 2D tile representation of the world that would have been
         // drawn if the same inputs had been given to playWithKeyboard().
         RandomWorld t = new RandomWorld();
-        TETile[][] finalWorldFrame = t.createANewWorld(input, WIDTH, HEIGHT);
-        return finalWorldFrame;
+        long seed = 0;
+        for (int i = 0; i < input.length(); i += 1) {
+            if (input.charAt(i) <= '9' && input.charAt(i) >= '0') {
+                seed = seed * 10 + input.charAt(i);
+            }
+        }
+        if (input.charAt(0) == 'n' || input.charAt(0) == 'N') {
+            TETile[][] finalWorldFrame = t.createANewWorld(seed, WIDTH, HEIGHT);
+            allWorld.put(seed, finalWorldFrame);
+            return finalWorldFrame;
+        } else {
+            return allWorld.get(seed);
+        }
     }
 }

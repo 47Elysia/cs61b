@@ -1,10 +1,5 @@
 package byog.Core;
-import byog.TileEngine.TETile;
-import byog.TileEngine.Tileset;
-import byog.TileEngine.TERenderer;
 
-import java.awt.*;
-import java.util.Random;
 public class Position {
     private int positionx;
     private int positiony;
