@@ -11,7 +11,7 @@ public class Game {
     public static final int WIDTH = 80;
     public static final int HEIGHT = 30;
 
-    public static HashMap<Long, TETile[][]> allWorld = new HashMap<>();
+    private static HashMap<Long, TETile[][]> allWorld = new HashMap<>();
 
     /**
      * Method used for playing a fresh game. The game should start from the main menu.

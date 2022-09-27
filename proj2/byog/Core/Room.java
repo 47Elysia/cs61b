@@ -46,10 +46,12 @@ public class Room {
         for (Room room1 : otherroom) {
             int centreXdiff = Math.abs(room.centrex() - room1.centrex());
             int centreYdiff = Math.abs(room.centrey() - room1.centrey());
-            if (room != room1 && (centreXdiff < Math.max(room.roomlength, room1.roomlength) / 2 - 2)) {
+            int maxroomlength = Math.max(room.roomlength, room1.roomlength);
+            int maxroomheight = Math.max(room.roomheight, room1.roomheight);
+            if (room != room1 && (centreXdiff < maxroomlength / 2 - 2)) {
                 return true;
             }
-            if (room != room1 && (centreYdiff < Math.max(room.roomheight, room1.roomheight) / 2 - 2)) {
+            if (room != room1 && (centreYdiff < maxroomheight / 2 - 2)) {
                 return true;
             }
         }
