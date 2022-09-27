@@ -44,8 +44,8 @@ public class Room {
         return y <= HEIGHT - 1 && y >= 0;
     }
 
-    public static boolean istoonear(Room room, ArrayList<Room> otherroom){
-        for (Room room1 : otherroom){
+    public static boolean istoonear(Room room, ArrayList<Room> otherroom) {
+        for (Room room1 : otherroom) {
             int centreXdiff = Math.abs(room.centrex() - room1.centrex());
             int centreYdiff = Math.abs(room.centrey() - room1.centrey());
             if (room != room1 && (centreXdiff < Math.max(room.roomlength, room1.roomlength) / 2 - 2 || centreYdiff < Math.max(room.roomheight, room1.roomheight) / 2 - 2)) {
@@ -71,7 +71,7 @@ public class Room {
 
 
 
-    public void drawroom(TETile[][] world){
+    public void drawroom(TETile[][] world) {
         int uprightx = getuprightx();
         int uprighty = getuprighty();
         int bottomleftx = getbottomleftx();
@@ -83,33 +83,7 @@ public class Room {
                 }
             }
         }
-        for (int j = bottomlefty; j <= uprighty; j += 1) {
-            if (yIsValid(j) && xIsValid(bottomleftx)) {
-                if (world[bottomleftx][j] == Tileset.NOTHING) {
-                    world[bottomleftx][j] = Tileset.WALL;
-                }
-            }
-            if (yIsValid(j) && xIsValid(uprightx)){
-                if (world[uprightx][j] == Tileset.NOTHING) {
-                    world[uprightx][j] = Tileset.WALL;
-                }
-            }
-
-        }
-        for (int i = bottomleftx; i <= uprightx - 1; i += 1) {
-            if (xIsValid(i) && yIsValid(bottomlefty)) {
-                if (world[i][bottomlefty] == Tileset.NOTHING) {
-                    world[i][bottomlefty] = Tileset.WALL;
-                }
-            }
-            if (yIsValid(uprighty) && xIsValid(i)) {
-                if (world[i][uprighty] == Tileset.NOTHING) {
-                    world[i][uprighty] = Tileset.WALL;
-                }
-            }
-        }
     }
-
     public void drawCorridor(Room room, Random random, TETile[][] world) {
         int thisx = this.centrex();
         int thisy = this.centrey();

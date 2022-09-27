@@ -21,9 +21,21 @@ public class RandomWorld {
         return true;
     }
 
+    private static void fillAround(TETile[][] world, int x, int y) {
+        int length = world.length;
+        int height = world[0].length;
+        for (int i = x - 1; i <= x + 1; i += 1) {
+            for (int j = y - 1; j <= y + 1; j += 1) {
+                if (isvalid(i, j, length, height) && world[i][j] == Tileset.NOTHING) {
+                    world[i][j] = Tileset.WALL;
+                }
+            }
+        }
+    }
 
 
-    public TETile[][] createANewWorld(String input, int WIDTH, int HEIGHT){
+
+    public TETile[][] createANewWorld(String input, int WIDTH, int HEIGHT) {
         int seed = 0;
         for (int i = 0; i < input.length(); i += 1) {
             if (input.charAt(i) <= '9' && input.charAt(i) >= '0') {
@@ -34,8 +46,8 @@ public class RandomWorld {
         ter.initialize(WIDTH, HEIGHT);
         random = new Random(seed);
         TETile[][] world = new TETile[WIDTH][HEIGHT];
-        for (int i = 0; i < WIDTH; i += 1){
-            for (int j = 0; j < HEIGHT; j += 1){
+        for (int i = 0; i < WIDTH; i += 1) {
+            for (int j = 0; j < HEIGHT; j += 1) {
                 world[i][j] = Tileset.NOTHING;
             }
         }
@@ -46,7 +58,7 @@ public class RandomWorld {
             int roomheight = RandomUtils.uniform(random, 1, 8) * 2;
             Position upright = new Position(bottomleft.getPositionx() + roomlength, bottomleft.getPositiony() + roomheight);
             Room room = new Room(bottomleft, upright);
-            if (!Room.istoonear(room, roomlist) && !room.isfringe()){
+            if (!Room.istoonear(room, roomlist) && !room.isfringe()) {
                 roomlist.add(room);
                 room.drawroom(world);
             }
@@ -55,7 +67,7 @@ public class RandomWorld {
             }
         }
         for (Room room2 : roomlist) {
-            for (Room room3 : roomlist){
+            for (Room room3 : roomlist) {
                 if (room2 != room3 ) {
                     room2.drawCorridor(room3, random, world);
                 }
@@ -65,18 +77,7 @@ public class RandomWorld {
         for (int i = 0; i < WIDTH; i += 1) {
             for (int j = 0; j < HEIGHT; j += 1) {
                 if (world[i][j] == Tileset.FLOOR) {
-                    if (isvalid(i - 1, j, WIDTH, HEIGHT) && world[i - 1][j] == Tileset.NOTHING ) {
-                        world[i - 1][j] = Tileset.WALL;
-                    }
-                    if (isvalid(i + 1, j, WIDTH, HEIGHT) && world[i + 1][j] == Tileset.NOTHING) {
-                        world[i + 1][j] = Tileset.WALL;
-                    }
-                    if (isvalid(i, j + 1, WIDTH, HEIGHT) && world[i][j + 1] == Tileset.NOTHING) {
-                        world[i][j + 1] = Tileset.WALL;
-                    }
-                    if (isvalid(i, j - 1, WIDTH, HEIGHT) && world[i][j - 1] == Tileset.NOTHING) {
-                        world[i][j - 1] = Tileset.WALL;
-                    }
+                    fillAround(world, i, j);
                 }
             }
         }
