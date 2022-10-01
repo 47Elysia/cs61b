@@ -4,7 +4,10 @@ import edu.princeton.cs.introcs.StdStats;
 public class PercolationStats {
     private double[] sample;
     private double T;
-    public PercolationStats(int N, int T, PercolationFactory pf) throws IllegalArgumentException {
+    public PercolationStats(int N, int T, PercolationFactory pf) {
+        if (N <= 0 || T <= 0) {
+            throw new IllegalArgumentException();
+        }
         this.T = T;
         sample = new double[N];
         int x;
@@ -35,6 +38,6 @@ public class PercolationStats {
     }
 
 
-    
+
 
 }
