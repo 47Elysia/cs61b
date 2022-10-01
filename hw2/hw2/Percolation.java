@@ -62,7 +62,7 @@ public class Percolation {
         } else {
             if (sites.connected(top, xyTo1D(row, col))) {
                 if (row == flagopen.length - 1) {
-                    sites.connected(xyTo1D(row, col), bottom);
+                    sites.union(xyTo1D(row, col), bottom);
                 }
                 return true;
             }
@@ -77,9 +77,6 @@ public class Percolation {
         return numberofopensites;
     }
     public boolean percolates() {
-        if (numberofopensites == 0) {
-            return false;
-        }
         if (sites.connected(bottom, top)) {
             return true;
         }
