@@ -66,8 +66,8 @@ public class Percolation {
             if (sites.connected(top, xyTo1D(row, col))) {
                 return true;
             }
+            return false;
         }
-        return false;
     }
     private boolean isvalid(int row, int col) {
         int height = flagopen.length;
