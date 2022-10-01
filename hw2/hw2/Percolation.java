@@ -3,7 +3,6 @@ package hw2;
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 public class Percolation {
     private int numberofopensites = 0;
-    private WeightedQuickUnionUF site;
     private WeightedQuickUnionUF sites;
     private int top;
     private int bottom;
@@ -14,7 +13,6 @@ public class Percolation {
         }
         top = N * N;
         bottom = N * N + 1;
-        site = new WeightedQuickUnionUF(N * N);
         sites = new WeightedQuickUnionUF(N * N + 2);
         flagopen = new boolean[N][N];
         for (int i = 0; i < N; i += 1) {
@@ -43,7 +41,6 @@ public class Percolation {
             return;
         }
         if (flagopen[nextrow][nextcol]) {
-            site.union(xyTo1D(row, col), xyTo1D(nextrow, nextcol));
             sites.union(xyTo1D(row, col), xyTo1D(nextrow, nextcol));
         }
     }
