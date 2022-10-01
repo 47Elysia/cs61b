@@ -18,9 +18,6 @@ public class Percolation {
         sites = new WeightedQuickUnionUF(N * N + 2);
         flagopen = new boolean[N][N];
         for (int i = 0; i < N; i += 1) {
-            sites.union(xyTo1D(N - 1, i), bottom);
-        }
-        for (int i = 0; i < N; i += 1) {
             sites.union(xyTo1D(0, i), top);
         }
     }
@@ -64,6 +61,9 @@ public class Percolation {
             return false;
         } else {
             if (sites.connected(top, xyTo1D(row, col))) {
+                if (row == flagopen.length - 1) {
+                    sites.connected(xyTo1D(row, col), bottom);
+                }
                 return true;
             }
             return false;
@@ -77,6 +77,9 @@ public class Percolation {
         return numberofopensites;
     }
     public boolean percolates() {
+        if (numberofopensites == 0) {
+            return false;
+        }
         if (sites.connected(bottom, top)) {
             return true;
         }
