@@ -13,7 +13,7 @@ public class PercolationStats {
         int x;
         int y;
         for (int i = 0; i < T; i += 1) {
-            Percolation percolation= pf.make(N);
+            Percolation percolation = pf.make(N);
             while (!percolation.percolates()) {
                 do {
                     x = StdRandom.uniform(N);

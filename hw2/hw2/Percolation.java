@@ -4,13 +4,25 @@ import edu.princeton.cs.algs4.WeightedQuickUnionUF;
 public class Percolation {
     private int numberofopensites = 0;
     private WeightedQuickUnionUF site;
+    private WeightedQuickUnionUF sites;
+    private int top;
+    private int bottom;
     private boolean[][] flagopen;
     public Percolation(int N) {
         if (N <= 0) {
             throw new IllegalArgumentException();
         }
+        top = N * N;
+        bottom = N * N + 1;
         site = new WeightedQuickUnionUF(N * N);
+        sites = new WeightedQuickUnionUF(N * N + 2);
         flagopen = new boolean[N][N];
+        for (int i = 0; i < N; i += 1) {
+            sites.union(xyTo1D(N - 1, i), bottom);
+        }
+        for (int i = 0; i < N; i += 1) {
+            sites.union(xyTo1D(0, i), top);
+        }
     }
     private int xyTo1D(int r, int c) {
         return r * flagopen.length + c;
@@ -35,6 +47,7 @@ public class Percolation {
         }
         if (flagopen[nextrow][nextcol]) {
             site.union(xyTo1D(row, col), xyTo1D(nextrow, nextcol));
+            sites.union(xyTo1D(row, col), xyTo1D(nextrow, nextcol));
         }
     }
     public boolean isOpen(int row, int col) {
@@ -50,10 +63,8 @@ public class Percolation {
         if (!isOpen(row, col)) {
             return false;
         } else {
-            for (int i = 0; i < flagopen.length; i += 1) {
-                if (site.connected(i, xyTo1D(row, col))) {
-                    return true;
-                }
+            if (sites.connected(top, xyTo1D(row, col))) {
+                return true;
             }
         }
         return false;
@@ -66,11 +77,8 @@ public class Percolation {
         return numberofopensites;
     }
     public boolean percolates() {
-        int height = flagopen.length - 1;
-        for (int col = 0; col <= height; col += 1) {
-            if (isFull(height, col)) {
-                return true;
-            }
+        if (sites.connected(bottom, top)) {
+            return true;
         }
         return false;
     }
