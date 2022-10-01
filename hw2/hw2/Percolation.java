@@ -77,10 +77,10 @@ public class Percolation {
         return numberofopensites;
     }
     public boolean percolates() {
-        if (sites.connected(bottom, top)) {
-            return true;
+        if (numberofopensites == 0) {
+            return false;
         }
-        return false;
+        return sites.connected(bottom, top);
     }
     public static void main(String[] args) {
     }
