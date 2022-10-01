@@ -1,12 +1,9 @@
 package hw2;
 
 import edu.princeton.cs.algs4.WeightedQuickUnionUF;
-
-import java.util.HashSet;
-
 public class Percolation {
     private int numberofopensites = 0;
-    WeightedQuickUnionUF site;
+    private WeightedQuickUnionUF site;
     private boolean[][] flagopen;
     public Percolation(int N) {
         if (N <= 0) {
@@ -77,8 +74,6 @@ public class Percolation {
         }
         return false;
     }
-    public void main(String args[]) {
-
+    public static void main(String[] args) {
     }
-
 }

@@ -9,19 +9,19 @@ public class PercolationStats {
             throw new IllegalArgumentException();
         }
         this.T = T;
-        sample = new double[N];
+        sample = new double[T];
         int x;
         int y;
         for (int i = 0; i < T; i += 1) {
-           Percolation percolation= pf.make(N);
-           while (!percolation.percolates()) {
-               do {
-                x = StdRandom.uniform(N);
-                y = StdRandom.uniform(N);
-               } while (percolation.isOpen(x, y));
-               percolation.open(x, y);
-           }
-        sample[i] = (double) percolation.numberOfOpenSites() / (N * N);
+            Percolation percolation= pf.make(N);
+            while (!percolation.percolates()) {
+                do {
+                    x = StdRandom.uniform(N);
+                    y = StdRandom.uniform(N);
+                } while (percolation.isOpen(x, y));
+                percolation.open(x, y);
+            }
+            sample[i] = (double) percolation.numberOfOpenSites() / (N * N);
         }
     }
     public double mean() {
