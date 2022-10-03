@@ -7,7 +7,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class TestComplexOomage {
 
@@ -42,9 +41,10 @@ public class TestComplexOomage {
         for (int i = 0; i <= 10; i += 1) {
             ArrayList<Integer> params = new ArrayList<>(10);
             for (int j = 0; j < 10; j += 1) {
-                int x = StdRandom.uniform(254, 255);
+                int x = StdRandom.uniform(0, 255);
                 params.add(j, x);
             }
+            params.add(1);
             deadlyList.add(new ComplexOomage(params));
         }
 
