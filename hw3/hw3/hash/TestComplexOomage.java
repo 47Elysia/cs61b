@@ -33,22 +33,30 @@ public class TestComplexOomage {
 
         assertTrue(OomageTestUtility.haveNiceHashCodeSpread(oomages, 10));
     }
+    private ArrayList<Integer> randomList() {
+        int N = StdRandom.uniform(1, 10);
+        ArrayList<Integer> params = new ArrayList<>(N);
+        for (int i = 0; i < N; i += 1) {
+            params.add(StdRandom.uniform(0, 255));
+        }
+        return params;
+    }
 
     @Test
     public void testWithDeadlyParams() {
         List<Oomage> deadlyList = new ArrayList<>();
 
-        for (int i = 0; i <= 10; i += 1) {
-            int capacity = StdRandom.uniform(10);
-            ArrayList<Integer> params = new ArrayList<>(capacity);
-            for (int j = 0; j < capacity; j += 1) {
-                int x = StdRandom.uniform(0, 255);
-                params.add(j, x);
-            }
-            params.add(1);
+        int N = 100;
+        ArrayList<Integer> suffix = new ArrayList<>();
+        suffix.add(1);
+        suffix.add(2);
+        suffix.add(3);
+        suffix.add(4);
+        for (int i = 0; i < N; i++) {
+            ArrayList<Integer> params = randomList();
+            params.addAll(suffix);
             deadlyList.add(new ComplexOomage(params));
         }
-
         assertTrue(OomageTestUtility.haveNiceHashCodeSpread(deadlyList, 10));
     }
 
