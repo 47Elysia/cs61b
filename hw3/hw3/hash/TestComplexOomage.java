@@ -39,8 +39,9 @@ public class TestComplexOomage {
         List<Oomage> deadlyList = new ArrayList<>();
 
         for (int i = 0; i <= 10; i += 1) {
-            ArrayList<Integer> params = new ArrayList<>(10);
-            for (int j = 0; j < 10; j += 1) {
+            int capacity = StdRandom.uniform(10);
+            ArrayList<Integer> params = new ArrayList<>(capacity);
+            for (int j = 0; j < capacity; j += 1) {
                 int x = StdRandom.uniform(0, 255);
                 params.add(j, x);
             }
