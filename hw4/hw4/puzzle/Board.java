@@ -1,7 +1,7 @@
 package hw4.puzzle;
 import edu.princeton.cs.algs4.Queue;
 
-public class Board implements WorldState{
+public class Board implements WorldState {
     private int[][] tiles;
     private int N;
     private static int blank = 0;
@@ -47,7 +47,7 @@ public class Board implements WorldState{
         Queue<WorldState> neighbor = new Queue<>();
         int blankX = -1;
         int blankY = -1;
-        for (int i = 0; i< N; i += 1) {
+        for (int i = 0; i < N; i += 1) {
             for (int j = 0; j < N; j += 1) {
                 if (tiles[i][j] == blank) {
                     blankX = i;
@@ -59,7 +59,7 @@ public class Board implements WorldState{
         int[][] around = new int[N][N];
         for (int i = 0; i < N; i += 1) {
             for (int j = 0; j < N; j += 1) {
-                around[i][j] =tileAt(i, j);
+                around[i][j] = tileAt(i, j);
             }
         }
         for (int i = 0; i < N; i += 1) {
@@ -133,11 +133,19 @@ public class Board implements WorldState{
         if (y == null || y.getClass() != this.getClass()) {
             return false;
         }
-        Board newy= (Board) y;
-        if (newy.hamming() == this.hamming()) {
-            return true;
+        Board newy = (Board) y;
+        for (int i = 0; i < N ;i += 1) {
+            for (int j = 0; j < N; j += 1) {
+                if (newy.tileAt(i, j) != this.tileAt(i, j)) {
+                    return false;
+                }
+            }
         }
-        return false;
+        return true;
+    }
+    @Override
+    public int hashCode() {
+        return super.hashCode();
     }
     /** Returns the string representation of the board. 
       * Uncomment this method. */
@@ -147,7 +155,7 @@ public class Board implements WorldState{
         s.append(N + "\n");
         for (int i = 0; i < N; i++) {
             for (int j = 0; j < N; j++) {
-                s.append(String.format("%2d ", tileAt(i,j)));
+                s.append(String.format("%2d ", tileAt(i, j)));
             }
             s.append("\n");
         }

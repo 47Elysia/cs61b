@@ -25,7 +25,9 @@ public class Solver {
         }
         @Override
         public int compareTo(Searchnode o) {
-            return this.moves + this.state.estimatedDistanceToGoal() - o.moves - o.state.estimatedDistanceToGoal();
+            int movesdist = this.moves - o.moves;
+            int distogoal = this.state.estimatedDistanceToGoal() - o.state.estimatedDistanceToGoal();
+            return movesdist + distogoal;
         }
     }
     private MinPQ<Searchnode> searchnode = new MinPQ<>();
