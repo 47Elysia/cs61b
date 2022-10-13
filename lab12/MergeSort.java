@@ -59,18 +59,19 @@ public class MergeSort {
     private static <Item extends Comparable> Queue<Item> mergeSortedQueues(
             Queue<Item> q1, Queue<Item> q2) {
         Queue<Item> queue = new Queue<>();
-        while (!q1.isEmpty() || !q2.isEmpty()) {
+        while (true) {
+            if (q1.isEmpty() && q2.isEmpty()) {
+                return queue;
+            }
             Item item = getMin(q1, q2);
             queue.enqueue(item);
-
         }
-        return queue;
     }
 
     /** Returns a Queue that contains the given items sorted from least to greatest. */
     public static <Item extends Comparable> Queue<Item> mergeSort(
             Queue<Item> items) {
-        Queue<Queue<Item>> singlemerge = new Queue<>();
+        Queue<Queue<Item>> singlemerge;
         singlemerge = makeSingleItemQueues(items);
         Queue<Item> sortedqueue = new Queue<>();
         while (!singlemerge.isEmpty()) {

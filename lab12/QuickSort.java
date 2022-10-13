@@ -77,10 +77,10 @@ public class QuickSort {
         return items;
     }
     public static void main(String args[]) {
-        Queue <String> students = new Queue<>();
-        students.enqueue("Alice");
-        students.enqueue("Vanessa");
-        students.enqueue("Ethan");
+        Queue <Integer> students = new Queue<>();
+        for (int i = 0; i < 11; i += 1) {
+            students.enqueue(10 - i);
+        }
         System.out.println(students);
         students = QuickSort.quickSort(students);
         System.out.println(students);
