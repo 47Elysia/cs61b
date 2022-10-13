@@ -1,4 +1,3 @@
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,56 +73,56 @@ public class Rasterer {
         int size = (int) Math.pow(2, dep);
         double widthperpicture = (ROOT_LRLON - ROOT_ULLON) / size;
         double heightperpicture = (ROOT_ULLAT - ROOT_LRLAT) / size;
-        int RNUM = 0, LNUM = 0, TOPNUM = 0, BOTTOMNUM = 0;
+        int rNUM = 0, lNUM = 0, tOPNUM = 0, bOTTOMNUM = 0;
         for (int i = 0; i < size; i += 1) {
             if (requiredULLON <= ROOT_ULLON + (i + 1) * widthperpicture
                     && requiredULLON >= ROOT_ULLON + i * widthperpicture) {
-                LNUM = i;
+                lNUM = i;
                 break;
             }
         }
         for (int i = 0; i < size; i += 1) {
             if (requiredLRLON <= ROOT_ULLON + (i + 1) * widthperpicture
                     && requiredLRLON >= ROOT_ULLON + i * widthperpicture) {
-                RNUM = i;
+                rNUM = i;
                 break;
             }
         }
         for (int i = 0; i < size; i += 1) {
             if (requiredULLAT <= ROOT_ULLAT - i * heightperpicture
                     && requiredULLAT >= ROOT_ULLAT - (i + 1) * heightperpicture) {
-                TOPNUM = i;
+                tOPNUM = i;
                 break;
             }
         }
         for (int i = 0; i < size; i += 1) {
             if (requiredLRLAT <= ROOT_ULLAT - i * heightperpicture
                     && requiredLRLAT >= ROOT_ULLAT - (i + 1) * heightperpicture) {
-                BOTTOMNUM = i;
+                bOTTOMNUM = i;
                 break;
             }
         }
-        int col = RNUM - LNUM + 1;
-        int row = BOTTOMNUM - TOPNUM + 1;
+        int col = rNUM - lNUM + 1;
+        int row = bOTTOMNUM - tOPNUM + 1;
         String[][] map = new String[row][col];
         for (int i = 0; i < row; i += 1) {
             for (int j = 0; j < col; j += 1) {
                 map[i][j] = "d" + dep + "_x"
-                        + (LNUM + j) + "_y" + (TOPNUM + i) + ".png";
+                        + (lNUM + j) + "_y" + (tOPNUM + i) + ".png";
             }
         }
         results.put("render_grid", map);
-        results.put("raster_ul_lon", ROOT_ULLON + LNUM * widthperpicture);
-        results.put("raster_ul_lat", ROOT_ULLAT - TOPNUM * heightperpicture);
-        results.put("raster_lr_lon", ROOT_ULLON + (RNUM + 1) * widthperpicture);
-        results.put("raster_lr_lat", ROOT_ULLAT - (BOTTOMNUM + 1) * heightperpicture);
+        results.put("raster_ul_lon", ROOT_ULLON + lNUM * widthperpicture);
+        results.put("raster_ul_lat", ROOT_ULLAT - tOPNUM * heightperpicture);
+        results.put("raster_lr_lon", ROOT_ULLON + (rNUM + 1) * widthperpicture);
+        results.put("raster_lr_lat", ROOT_ULLAT - (bOTTOMNUM + 1) * heightperpicture);
         results.put("depth", dep);
         results.put("query_success", true);
         return results;
     }
-    private int getdepth(double LonDPP) {
+    private int getdepth(double lonDPP) {
         int dep = 0;
-        while (LonDPP <= depth[dep]) {
+        while (lonDPP <= depth[dep]) {
             dep += 1;
             if (dep == 7) {
                 break;
