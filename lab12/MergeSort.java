@@ -73,11 +73,16 @@ public class MergeSort {
         }
         Queue<Queue<Item>> singlemerge;
         singlemerge = makeSingleItemQueues(items);
-        Queue<Item> sortedqueue = singlemerge.dequeue();
-        for (Queue<Item> queue : singlemerge){
-            sortedqueue = mergeSortedQueues(sortedqueue, queue);
+        while (singlemerge.size() != 1) {
+            Queue<Queue<Item>> tmp = new Queue<>();
+            while (!singlemerge.isEmpty()) {
+                Queue<Item> q1 = singlemerge.dequeue();
+                Queue<Item> q2 = singlemerge.isEmpty()? new Queue<>() : singlemerge.dequeue();
+                tmp.enqueue(mergeSortedQueues(q1, q2));
+            }
+            singlemerge = tmp;
         }
-        return sortedqueue;
+        return singlemerge.dequeue();
     }
     public static void main(String args[]) {
         Queue <String> students = new Queue<>();
