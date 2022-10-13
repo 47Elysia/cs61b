@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,8 +10,16 @@ import java.util.Map;
  */
 public class Rasterer {
 
+    public static final double ROOT_ULLAT = 37.892195547244356, ROOT_ULLON = -122.2998046875,
+            ROOT_LRLAT = 37.82280243352756, ROOT_LRLON = -122.2119140625;
+    public static final int TILE_SIZE = 256;
+    private double ROOT_LonDPP = (ROOT_LRLON - ROOT_ULLON) / TILE_SIZE;
+    private double[] depth = new double[8];
+
     public Rasterer() {
-        // YOUR CODE HERE
+        for (int i = 0; i < 8; i += 1) {
+            depth[i] = ROOT_LonDPP / Math.pow(2, i);
+        }
     }
 
     /**
@@ -44,9 +53,83 @@ public class Rasterer {
     public Map<String, Object> getMapRaster(Map<String, Double> params) {
         // System.out.println(params);
         Map<String, Object> results = new HashMap<>();
-        System.out.println("Since you haven't implemented getMapRaster, nothing is displayed in "
-                           + "your browser.");
+        double requiredULLON = params.get("ullon");
+        double requiredULLAT = params.get("ullat");
+        double requiredLRLON = params.get("lrlon");
+        double requiredLRLAT = params.get("lrlat");
+        if (requiredLRLAT < ROOT_LRLAT || requiredLRLON > ROOT_LRLON
+                || requiredULLAT > ROOT_ULLAT || requiredULLON < ROOT_ULLON
+                || requiredLRLON <= requiredULLON || requiredLRLAT >= requiredULLAT) {
+            results.put("render_grid", null);
+            results.put("depth", null);
+            results.put("raster_ul_lon", requiredULLON);
+            results.put("raster_ul_lat", requiredULLAT);
+            results.put("raster_lr_lon", requiredLRLON);
+            results.put("raster_lr_lat", requiredLRLAT);
+            results.put("query_success", false);
+            return results;
+        }
+        double requireLonDPP = (requiredLRLON - requiredULLON) / params.get("w");
+        int dep = getdepth(requireLonDPP);
+        int size = (int) Math.pow(2, dep);
+        double widthperpicture = (ROOT_LRLON - ROOT_ULLON) / size;
+        double heightperpicture = (ROOT_ULLAT - ROOT_LRLAT) / size;
+        int RNUM = 0, LNUM = 0, TOPNUM = 0, BOTTOMNUM = 0;
+        for (int i = 0; i < size; i += 1) {
+            if (requiredULLON <= ROOT_ULLON + (i + 1) * widthperpicture
+                    && requiredULLON >= ROOT_ULLON + i * widthperpicture) {
+                LNUM = i;
+                break;
+            }
+        }
+        for (int i = 0; i < size; i += 1) {
+            if (requiredLRLON <= ROOT_ULLON + (i + 1) * widthperpicture
+                    && requiredLRLON >= ROOT_ULLON + i * widthperpicture) {
+                RNUM = i;
+                break;
+            }
+        }
+        for (int i = 0; i < size; i += 1) {
+            if (requiredULLAT <= ROOT_ULLAT - i * heightperpicture
+                    && requiredULLAT >= ROOT_ULLAT - (i + 1) * heightperpicture) {
+                TOPNUM = i;
+                break;
+            }
+        }
+        for (int i = 0; i < size; i += 1) {
+            if (requiredLRLAT <= ROOT_ULLAT - i * heightperpicture
+                    && requiredLRLAT >= ROOT_ULLAT - (i + 1) * heightperpicture) {
+                BOTTOMNUM = i;
+                break;
+            }
+        }
+        int col = RNUM - LNUM + 1;
+        int row = BOTTOMNUM - TOPNUM + 1;
+        String[][] map = new String[row][col];
+        for (int i = 0; i < row; i += 1) {
+            for (int j = 0; j < col; j += 1) {
+                map[i][j] = "d" + dep + "_x"
+                        + (LNUM + j) + "_y" + (TOPNUM + i) + ".png";
+            }
+        }
+        results.put("render_grid", map);
+        results.put("raster_ul_lon", ROOT_ULLON + LNUM * widthperpicture);
+        results.put("raster_ul_lat", ROOT_ULLAT - TOPNUM * heightperpicture);
+        results.put("raster_lr_lon", ROOT_ULLON + (RNUM + 1) * widthperpicture);
+        results.put("raster_lr_lat", ROOT_ULLAT - (BOTTOMNUM + 1) * heightperpicture);
+        results.put("depth", dep);
+        results.put("query_success", true);
         return results;
+    }
+    private int getdepth(double LonDPP) {
+        int dep = 0;
+        while (LonDPP <= depth[dep]) {
+            dep += 1;
+            if (dep == 7) {
+                break;
+            }
+        }
+        return dep;
     }
 
 }
