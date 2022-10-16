@@ -7,8 +7,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
-/* import java.util.Iterator; */
 
 /**
  * Graph for storing all of the intersection (vertex) and road (edge) information.
@@ -29,12 +29,22 @@ public class GraphDB {
         int max_speed;
         boolean isvalid;
         long wayid;
+        String wayname;
         public way(long wayid) {
             nodeinway = new HashMap<>();
             max_speed = 0;
             isvalid = false;
             this.wayid = wayid;
         }
+    }
+    public String getwayname(long wayid) {
+        return getcurway(wayid).wayname;
+    }
+    public HashMap<Long, node> getwayMap(long wayid) {
+        return getcurway(wayid).nodeinway;
+    }
+    public boolean wayexist(long wayid) {
+        return allway.containsKey(wayid);
     }
     public int waysize(way curway) {
         return curway.nodeinway.size();
@@ -62,11 +72,32 @@ public class GraphDB {
         double lat;
         String name;
         ArrayList<Long> adj;
+        double distTo;
+        double priority;
         public node(double lon, double lat) {
             this.lon = lon;
             this.lat = lat;
             this.adj = new ArrayList<>();
         }
+    }
+    class NodeComparator implements Comparator<Long> {
+        @Override
+        public int compare(Long v, Long w) {
+            return Double.compare(nodes.get(v).priority, nodes.get(w).priority);
+        }
+    }
+
+    public Comparator<Long> getNodeComparator() {
+        return new NodeComparator();
+    }
+    public void changePriority(long ver, double priority) {
+        nodes.get(ver).priority = priority;
+    }
+    public void changedisTo(long ver, double dist) {
+        nodes.get(ver).distTo = dist;
+    }
+    public double getdistTo(long ver) {
+        return nodes.get(ver).distTo;
     }
     public void addadj(long long1, long long2) {
         nodes.get(long1).adj.add(long2);

@@ -1,5 +1,4 @@
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,7 +24,50 @@ public class Router {
      */
     public static List<Long> shortestPath(GraphDB g, double stlon, double stlat,
                                           double destlon, double destlat) {
-        return null; // FIXME
+        long stNode = g.closest(stlon, stlat);
+        long deNode = g.closest(destlon, destlat);
+        Map<Long, Long> edgeTo = new HashMap<>();
+        Set<Long> visited = new HashSet<>();
+        PriorityQueue<Long> fringe = new PriorityQueue<>(g.getNodeComparator());
+        for (long node : g.vertices()) {
+            g.changedisTo(node, Double.POSITIVE_INFINITY);
+        }
+        g.changedisTo(stNode, 0);
+        fringe.add(stNode);
+        while (!fringe.isEmpty()) {
+            long ver = fringe.poll();
+            if (visited.contains(ver)) {
+                continue;
+            }
+            if (ver == deNode) {
+                break;
+            }
+            visited.add(ver);
+            for (long neibor : g.adjacent(ver)) {
+                if (g.getdistTo(ver) + g.distance(neibor, ver) < g.getdistTo(neibor)) {
+                    g.changedisTo(neibor, g.getdistTo(ver) + g.distance(neibor, ver));
+                    g.changePriority(neibor, g.getdistTo(neibor)
+                            + g.distance(deNode, neibor));
+                    edgeTo.put(neibor, ver);
+                    fringe.add(neibor);
+                }
+            }
+        }
+        List<Long> res = new LinkedList<>();
+        res.add(deNode);
+        while (deNode != stNode) {
+            // cannot reach destNode
+            if (edgeTo.get(deNode) == null) {
+                return new LinkedList<>();
+            }
+            res.add(0, edgeTo.get(deNode));
+            deNode = edgeTo.get(deNode);
+        }
+
+        for (long ver : g.vertices()) {
+            g.changePriority(ver, 0);
+        }
+        return res; // FIXME
     }
 
     /**
@@ -37,14 +79,76 @@ public class Router {
      * route.
      */
     public static List<NavigationDirection> routeDirections(GraphDB g, List<Long> route) {
-        return null; // FIXME
+        List<NavigationDirection> res = new ArrayList<>();
+        NavigationDirection current = new NavigationDirection();
+        current.direction = NavigationDirection.START;
+        current.way = getwayname(g, route.get(0), route.get(1));
+        current.distance = g.distance(route.get(0), route.get(1));
+        for (int i = 1, j = 2; j < route.size(); i += 1, j += 2) {
+            if (!getwayname(g, route.get(i), route.get(j)).equals(current.way)) {
+                res.add(current);
+                current = new NavigationDirection();
+                current.way = getwayname(g, route.get(i), route.get(j));
+                double prebearing = g.bearing(route.get(i - 1), route.get(i));
+                double curbearing = g.bearing(route.get(i), route.get(j));
+                current.direction = convertBearingToDirection(prebearing, curbearing);
+                current.distance += g.distance(route.get(i), route.get(j));
+                continue;
+            }
+            current.distance += g.distance(route.get(i), route.get(j));
+        }
+        res.add(current);
+        return res;
     }
 
+    private static String getwayname(GraphDB g, long v, long w) {
+        String name = "";
+        HashMap<Long, GraphDB.node> way1 = g.getwayMap(v);
+        HashMap<Long, GraphDB.node> way2 = g.getwayMap(w);
+        LinkedList<Long> intersection = new LinkedList<>();
+        for (Long node : way1.keySet()) {
+            if (way2.containsKey(node)) {
+                intersection.add(node);
+            }
+        }
+        if (!intersection.isEmpty()) {
+            if (!g.wayexist(intersection.get(0))) {
+                return name;
+            } else {
+                return g.getwayname(intersection.get(0));
+            }
+        }
+        return name;
+    }
+    private static int convertBearingToDirection(double prevBearing, double curBearing) {
+        double relativeBearing = curBearing - prevBearing;
+        if (relativeBearing > 180) {
+            relativeBearing -= 360;
+        } else if (relativeBearing < -180) {
+            relativeBearing += 360;
+        }
 
+        if (relativeBearing < -100) {
+            return NavigationDirection.SHARP_LEFT;
+        } else if (relativeBearing < -30) {
+            return NavigationDirection.LEFT;
+        } else if (relativeBearing < -15) {
+            return NavigationDirection.SLIGHT_LEFT;
+        } else if (relativeBearing < 15) {
+            return NavigationDirection.STRAIGHT;
+        } else if (relativeBearing < 30) {
+            return NavigationDirection.SLIGHT_RIGHT;
+        } else if (relativeBearing < 100) {
+            return NavigationDirection.RIGHT;
+        } else {
+            return NavigationDirection.SHARP_RIGHT;
+        }
+    }
     /**
      * Class to represent a navigation direction, which consists of 3 attributes:
      * a direction to go, a way, and the distance to travel for.
      */
+
     public static class NavigationDirection {
 
         /** Integer constants representing directions. */

@@ -40,6 +40,7 @@ public class GraphBuildingHandler extends DefaultHandler {
     private ArrayList<Long> curwaylist;
     private long lastnode;
     private long curwayid;
+    private String wayname;
 
     /**
      * Create a new GraphBuildingHandler.
@@ -121,6 +122,7 @@ public class GraphBuildingHandler extends DefaultHandler {
                         g.addtoway(curway, ver);
                     }
                     g.valid(curway);
+                    curway.wayname = wayname;
                     int size = g.waysize(curway);
                     for (int i = 0, j = 1; j < size; i += 1, j += 1) {
                         long long1 = curwaylist.get(i);
@@ -132,6 +134,7 @@ public class GraphBuildingHandler extends DefaultHandler {
                 /* TODO Figure out whether this way and its connections are valid. */
                 /* Hint: Setting a "flag" is good enough! */
             } else if (k.equals("name")) {
+                wayname = attributes.getValue("v");
                 System.out.println("Way Name: " + v);
             }
 //            System.out.println("Tag with k=" + k + ", v=" + v + ".");
