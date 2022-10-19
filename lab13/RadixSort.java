@@ -5,7 +5,6 @@
  *
  */
 public class RadixSort {
-    private static int maxlength;
     /**
      * Does LSD radix sort on the passed in array with the following restrictions:
      * The array can only have ASCII Strings (sequence of 1 byte characters)
@@ -18,14 +17,13 @@ public class RadixSort {
      */
     public static String[] sort(String[] asciis) {
         // TODO: Implement LSD Sort
-        maxlength = 0;
+        int maxlength = 0;
         for (String s : asciis) {
             int slength = s.length();
             maxlength = maxlength > slength ? maxlength : slength;
         }
-        int max = maxlength;
         String[] sorted = asciis.clone();
-        for (int i = 0; i < maxlength; i += 1) {
+        for (int i = maxlength - 1; i >= 0; i -= 1) {
             sortHelperLSD(sorted, i);
         }
         return sorted;
@@ -41,10 +39,10 @@ public class RadixSort {
         // Optional LSD helper method for required LSD radix sort
         int[] counts = new int[256];
         for (String s : asciis) {
-            if (s.length() < maxlength - index) {
-                counts['_'] += 1;
+            if (s.length() < index + 1) {
+                counts[0] += 1;
             } else {
-                counts[s.charAt(maxlength - index - 1)] += 1;
+                counts[s.charAt(index)] += 1;
             }
         }
         int[] starts = new int[256];
@@ -56,17 +54,17 @@ public class RadixSort {
         String[] unsorted = asciis.clone();
         for (int i = 0; i < asciis.length; i += 1) {
             String item = unsorted[i];
-            int place = 0;
-            if (item.length() < maxlength - index) {
-                place = starts['_'];
+            int place;
+            if (item.length() < index + 1) {
+                place = starts[0];
             } else {
-                place = starts[item.charAt(maxlength - index - 1)];
+                place = starts[item.charAt(index)];
             }
             asciis[place] = item;
-            if (item.length() < maxlength - index) {
-                starts['_'] += 1;
+            if (item.length() < index + 1) {
+                starts[0] += 1;
             } else {
-                starts[item.charAt(maxlength - index - 1)] += 1;
+                starts[item.charAt(index)] += 1;
             }
         }
         return ;

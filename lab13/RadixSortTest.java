@@ -12,5 +12,7 @@ class RadixSortTest {
         assertEquals(expected[1], sorted[1]);
         assertEquals(expected[2], sorted[2]);
         assertEquals(expected[3], sorted[3]);
+        String[] asciis1 = new String[]{" "," ","_","a"};
+        String[] sorted1 = RadixSort.sort(asciis1);
     }
 }
